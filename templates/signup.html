@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription</title>
+
+  <!-- Style global de la page d’inscription -->
+  <style>
+    :root {
+      --primary: #6F2DBD;
+      --light-purple: #B298DC;
+      --ulaval-blue: #006AFF;
+      --ulaval-blue-hover: #0051cc;
+    }
+
+    /* Style du corps de page */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url("{{ url_for('static', filename='background/le_back_du_back.png') }}");
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    }
+
+    /* En-tête contenant le logo ULaval */
+    header {
+      display: flex;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    header img {
+      height: 50px;
+    }
+
+    /* Formulaire centré avec effet flou et fond violet clair */
+    form {
+      max-width: 500px;
+      margin: 80px auto;
+      background-color: rgba(111, 45, 189, 0.15);
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      backdrop-filter: blur(5px);
+    }
+
+    h2 {
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: white;
+    }
+
+    /* Champs de saisie */
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* Bouton principal */
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: var(--ulaval-blue);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--ulaval-blue-hover);
+    }
+
+    /* Texte d’aide et lien */
+    p {
+      text-align: center;
+      font-size: 14px;
+      color: white;
+    }
+
+    a {
+      color: var(--light-purple);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Messages de validation */
+    .success {
+      color: lightgreen;
+      font-weight: bold;
+    }
+
+    .error {
+      color: #FF8080;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Logo ULaval -->
+  <header>
+    <img src="{{ url_for('static', filename='background/logo de ulaval.png') }}" alt="Université Laval">
+  </header>
+
+  <!-- Lien retour -->
+  <a href="{{ url_for('accueil') }}" style="
+    display: block;
+    color: #6F2DBD;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left;
+    margin: 20px 30px 0;
+    text-decoration: none;
+  ">← Retour à la page d'accueil</a>
+
+  <!-- Formulaire d’inscription -->
+  <form method="POST">
+    <h2>Créer un compte</h2>
+
+    <!-- Champs texte principaux -->
+    <label for="username">Nom d'utilisateur</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="prenom">Prénom</label>
+    <input type="text" id="prenom" name="prenom" required>
+
+    <label for="nom">Nom</label>
+    <input type="text" id="nom" name="nom" required>
+
+    <label for="email">Courriel</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="date_naissance">Date de naissance</label>
+    <input type="date" id="date_de_naissance" name="date_de_naissance">
+
+    <!-- Sélection du pays -->
+    <label for="pays">Pays de résidence</label>
+    <select name="pays" id="pays" required>
+      <option value="">-- Sélectionnez un pays --</option>
+      {% for country in countries %}
+        <option value="{{ country }}">{{ country }}</option>
+      {% endfor %}
+    </select>
+
+    <!-- Statut de l’utilisateur -->
+    <label for="statut">Vous êtes ?</label>
+    <select name="statut" id="statut" required>
+      <option value="">-- Choisir un statut --</option>
+      <option value="etudiant">Étudiant</option>
+      <option value="conseiller">Conseiller</option>
+      <option value="etudiant-conseiller">Étudiant-Conseiller</option>
+      <option value="invite">Invité</option>
+    </select>
+
+    <!-- Genre / orientation -->
+    <label for="Genre">Genre</label>
+    <select name="Genre" id="Genre" required>
+      <option value="">-- Choisir votre Genre --</option>
+      <option value="masculin">Masculin</option>
+      <option value="feminin">Féminin</option>
+      <option value="pansexuel">Pansexuel</option>
+      <option value="je_prefere_pas_repondre">Je préfère ne pas répondre</option>
+    </select>
+
+    <!-- Niveau de visibilité du profil -->
+    <label for="visibilite">Visibilité du profil</label>
+    <select name="visibilite" id="visibilite" required>
+      <option value="">-- Choisir une visibilité --</option>
+      <option value="anonyme">Anonyme</option>
+      <option value="public">Public</option>
+    </select>
+
+    <!-- Saisie mot de passe -->
+    <label for="mot_de_passe">Mot de passe</label>
+    <input type="password" id="mot_de_passe" name="mot_de_passe" required>
+
+    <label for="confirmer_mot_de_passe">Confirmer le mot de passe</label>
+    <input type="password" id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" required>
+
+    <!-- Bouton validation -->
+    <button type="submit">S'inscrire</button>
+
+    <!-- Redirection vers login -->
+    <div style="text-align: center; margin-top: 15px;">
+      <span style="color: white;">Déjà inscrit ? </span>
+      <a href="{{ url_for('login') }}">Se connecter</a>
+    </div>
+  </form>
+
+  <!-- Affichage message d’erreur ou succès -->
+  {% if msg %}
+    <p class="{{ msg_type }}">{{ msg }}</p>
+  {% endif %}
+
+</body>
+</html>

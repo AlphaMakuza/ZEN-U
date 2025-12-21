@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- Document HTML5 -->
+<html lang="fr">
+<head>
+  <!-- Encodage UTF-8 -->
+  <meta charset="UTF-8" />
+  <title>Modifier le lieu de résidence</title>
+
+  <!-- Styles internes -->
+  <style>
+    /* Mise en page générale avec fond dégradé */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ecd4ff, #d4b6ff);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Logo en haut à gauche */
+    .logo {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      width: 160px;
+    }
+
+    /* Conteneur du formulaire */
+    .box {
+      background: #f4dbff;
+      padding: 40px 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #6f2dbd;
+    }
+
+    /* Liste déroulante des lieux de résidence */
+    select {
+      width: 90%;
+      max-width: 300px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Bouton d'enregistrement */
+    button {
+      padding: 12px 30px;
+      background-color: #a14be7;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #8e35c9;
+      transform: translateY(-4px);
+    }
+
+    /* Bouton de retour */
+    .retour-btn {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .retour-btn a {
+      display: inline-block;
+      background-color: #d4afff;
+      color: #4a0072;
+      padding: 10px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .retour-btn a:hover {
+      background-color: #c287f4;
+    }
+
+    /* Animation d’apparition de la boîte */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Logo décoratif -->
+  <img src="{{ url_for('static', filename='images/affiche.svg') }}" alt="Logo UHealthForum" class="logo" />
+
+  <!-- Formulaire de sélection du lieu de résidence -->
+  <div class="box">
+    <h2>📍 Modifier votre lieu de résidence</h2>
+
+    <form method="POST">
+      <!-- Liste des pays passée dynamiquement depuis Flask -->
+      <select name="lieu_de_residence" id="lieu_de_residence" required>
+        {% for country in countries %}
+          <option value="{{ country }}" {% if country == lieu_actuel %}selected{% endif %}>{{ country }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Enregistrer</button>
+    </form>
+  </div>
+
+  <!-- Lien de retour au profil -->
+  <div class="retour-btn">
+    <a href="{{ url_for('profile') }}">⬅️ Retour au profil</a>
+  </div>
+
+</body>
+</html>

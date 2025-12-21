@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- Document HTML5 -->
+<html lang="fr">
+<head>
+  <!-- Encodage UTF-8 -->
+  <meta charset="UTF-8" />
+  <title>Modifier le statut</title>
+
+  <!-- Styles internes -->
+  <style>
+    /* Mise en page générale avec fond pastel en dégradé */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ecd4ff, #d4b6ff);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Logo positionné en haut à gauche */
+    .logo {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      width: 160px;
+    }
+
+    /* Conteneur principal du formulaire */
+    .box {
+      background: #f4dbff;
+      padding: 40px 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #6f2dbd;
+    }
+
+    /* Liste déroulante des statuts */
+    select {
+      width: 90%;
+      max-width: 300px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Bouton de validation */
+    button {
+      padding: 12px 30px;
+      background-color: #a14be7;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #8e35c9;
+      transform: translateY(-4px);
+    }
+
+    /* Section de retour vers la page profil */
+    .retour-btn {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .retour-btn a {
+      display: inline-block;
+      background-color: #d4afff;
+      color: #4a0072;
+      padding: 10px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .retour-btn a:hover {
+      background-color: #c287f4;
+    }
+
+    /* Animation d’apparition du formulaire */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Logo décoratif -->
+  <img src="{{ url_for('static', filename='images/affiche.svg') }}" alt="Logo USafeForum" class="logo" />
+
+  <!-- Formulaire de modification du statut étudiant -->
+  <div class="box">
+    <h2>🎓 Modifier votre statut étudiant</h2>
+
+    <form method="POST">
+      <!-- Liste des statuts possibles avec sélection dynamique -->
+      <select name="statut_etudiant" id="statut_etudiant" required>
+        <option value="citoyen" {% if statut.statut_etudiant == 'citoyen' %}selected{% endif %}>Citoyen</option>
+        <option value="résident permanent" {% if statut.statut_etudiant == 'résident permanent' %}selected{% endif %}>Résident permanent</option>
+        <option value="international" {% if statut.statut_etudiant == 'international' %}selected{% endif %}>International</option>
+        <option value="en échange" {% if statut.statut_etudiant == 'en échange' %}selected{% endif %}>En échange</option>
+      </select>
+      <button type="submit">Enregistrer les modifications</button>
+    </form>
+  </div>
+
+  <!-- Lien de retour vers le profil utilisateur -->
+  <div class="retour-btn">
+    <a href="{{ url_for('profile') }}">⬅️ Retour au profil</a>
+  </div>
+
+</body>
+</html>

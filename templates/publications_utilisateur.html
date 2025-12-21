@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <!-- Encodage des caractères -->
+    <meta charset="UTF-8" />
+    <title>Mes publications</title>
+
+    <!-- Feuille de style globale -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_homogene.css') }}" />
+  </head>
+
+  <body>
+    <!-- Inclusion de l’en-tête (barre de navigation) -->
+    {% include 'header.html' %}
+
+    <!-- Conteneur principal -->
+    <div class="container publications-container">
+      <h1 class="page-title">📝 Mes Publications</h1>
+
+      <!-- Si l'utilisateur a des publications -->
+      {% if publications %}
+        {% for pub in publications %}
+        <!-- Lien vers la page de la publication individuelle -->
+        <a href="{{ url_for('afficher_une_publication', id=pub.id_publication) }}" style="text-decoration: none; color: inherit;">
+          <div class="publication-card">
+
+            <!-- En-tête avec image et titre -->
+            <div style="display: flex; align-items: center;">
+              <div class="publication-meta" style="display: flex; align-items: center; gap: 10px;">
+                <!-- Image de profil ou image par défaut -->
+                <img src="{{ url_for('static', filename=pub.photo_de_profil or 'images/photo de profil defaut.png') }}"
+                     alt="Photo de profil"
+                     width="50"
+                     height="50"
+                     style="border-radius: 50%; object-fit: cover;">
+                <!-- Titre de la publication -->
+                <h2 class="publication-title">{{ pub.p_titre }}</h2>
+              </div>
+            </div>
+
+            <!-- Métadonnées : auteur + date + anonymat -->
+            <div class="publication-meta">
+              Posté par <strong>{{ pub.username }}</strong>
+              le {{ pub['date'].strftime('%d/%m/%Y %H:%M') }}
+              {% if pub.statut == 'anonyme' %}
+                <em>(anonyme)</em>
+              {% endif %}
+            </div>
+
+            <!-- Aperçu du texte (tronqué à 200 caractères) -->
+            <div class="publication-text">
+              {{ pub.texte|truncate(200) }}
+            </div>
+
+            <!-- Pied : nombre de commentaires + réactions -->
+            <div class="publication-footer">
+              <div class="left-comments">
+                {{ pub.nb_reponses }} Commentaire{{ 's' if pub.nb_reponses > 1 }}
+              </div>
+
+              <!-- Réactions à la publication -->
+              <div class="right-reactions">
+                {% if reactions[pub.id_publication] is defined %}
+                  {% if reactions[pub.id_publication]['LIKE'] is defined %}
+                    👍 {{ reactions[pub.id_publication]['LIKE'] }}
+                  {% endif %}
+                  {% if reactions[pub.id_publication]['LOVE'] is defined %}
+                    ❤️ {{ reactions[pub.id_publication]['LOVE'] }}
+                  {% endif %}
+                  {% if reactions[pub.id_publication]['DISLIKE'] is defined %}
+                    👎 {{ reactions[pub.id_publication]['DISLIKE'] }}
+                  {% endif %}
+                  {% if reactions[pub.id_publication]['SAD'] is defined %}
+                    😢 {{ reactions[pub.id_publication]['SAD'] }}
+                  {% endif %}
+                  {% if reactions[pub.id_publication]['ANGRY'] is defined %}
+                    😡 {{ reactions[pub.id_publication]['ANGRY'] }}
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      
+      <!-- Si aucune publication n’est présente -->
+      {% else %}
+        <p class="no-data">Vous n'avez encore publié aucun message.</p>
+      {% endif %}
+    </div>
+  </body>
+</html>

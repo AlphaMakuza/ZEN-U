@@ -1,0 +1,108 @@
+<!-- publications.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- Métadonnées de base -->
+  <meta charset="UTF-8">
+  <title>Publications</title>
+
+  <!-- Feuille de style principale -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style_homogene.css') }}">
+</head>
+<body>
+
+  <!-- Barre de navigation -->
+  {% include 'header.html' %}
+
+  <!-- Conteneur principal -->
+  <div class="publications-container">
+    <h1>Liste des publications</h1>
+
+    <!-- Bouton pour créer une nouvelle publication -->
+    <div style="text-align: right; margin-bottom: 20px;">
+      <a href="{{ url_for('creer_publication') }}">
+        <button style="
+          padding: 10px 20px;
+          background-color: #6f2dbd;
+          color: white;
+          border: none;
+          border-radius: 20px;
+          font-weight: bold;
+          cursor: pointer;
+        ">+ Nouvelle publication</button>
+      </a>
+    </div>
+
+    <!-- Affichage de toutes les publications -->
+    {% for pub in publications %}
+    
+    <!-- Chaque publication est un lien vers sa page détaillée -->
+    <a href="{{ url_for('afficher_une_publication', id=pub.id_publication) }}" style="text-decoration: none; color: inherit;">
+      <div class="publication-card">
+        
+        <!-- En-tête de la publication avec photo de profil et titre -->
+        <div style="display: flex; align-items: center;">
+          <div class="publication-meta" style="display: flex; align-items: center; gap: 10px;">
+            {% if pub.statut == 'anonyme' %}
+              <!-- Photo générique si l'auteur est anonyme -->
+              <img src="{{ url_for('static', filename='images/photo de profil defaut.png') }}" alt="Anonyme" width="50" height="50" style="border-radius: 50%; object-fit: cover;">
+              <h2 class="publication-title">{{ pub.p_titre }}</h2>
+            {% else %}
+              <!-- Photo réelle si l'auteur est public -->
+              <img src="{{ url_for('static', filename=pub.photo_de_profil or 'images/photo de profil defaut.png') }}" alt="Photo de profil" width="50" height="50" style="border-radius: 50%; object-fit: cover;">
+              <h2 class="publication-title">{{ pub.p_titre }}</h2>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Métadonnées : auteur + date -->
+        <div class="publication-meta">
+          Posté par
+          {% if pub.statut == 'anonyme' %}
+            <em>Utilisateur anonyme</em>
+          {% else %}
+            <strong>{{ pub.username }}</strong>
+          {% endif %}
+          le {{ pub['date'].strftime('%d/%m/%Y %H:%M') }}
+        </div>
+
+        <!-- Texte de la publication (tronqué à 200 caractères) -->
+        <div class="publication-text">
+          {{ pub.texte|truncate(200) }}
+        </div>
+
+        <!-- Pied de la publication : nombre de commentaires + réactions -->
+        <div class="publication-footer">
+          <!-- Nombre de commentaires visibles -->
+          <div class="left-comments">
+              {{ pub.nb_reponses_visibles }} Commentaire{{ 's' if pub.nb_reponses_visibles > 1 }}
+          </div>
+
+          <!-- Réactions (LIKE, LOVE, etc.) -->
+          <div class="right-reactions">
+            {% if reactions[pub.id_publication] is defined %}
+              {% if reactions[pub.id_publication]['LIKE'] is defined %}
+                👍 {{ reactions[pub.id_publication]['LIKE'] }}
+              {% endif %}
+              {% if reactions[pub.id_publication]['LOVE'] is defined %}
+                ❤️ {{ reactions[pub.id_publication]['LOVE'] }}
+              {% endif %}
+              {% if reactions[pub.id_publication]['DISLIKE'] is defined %}
+                👎 {{ reactions[pub.id_publication]['DISLIKE'] }}
+              {% endif %}
+              {% if reactions[pub.id_publication]['SAD'] is defined %}
+                😢 {{ reactions[pub.id_publication]['SAD'] }}
+              {% endif %}
+              {% if reactions[pub.id_publication]['ANGRY'] is defined %}
+                😡 {{ reactions[pub.id_publication]['ANGRY'] }}
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </a>
+
+    {% endfor %}
+  </div>
+</body>
+</html>

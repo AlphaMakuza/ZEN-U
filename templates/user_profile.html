@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profil de {{ user['prenom'] }} {{ user['nom'] }}</title>
+
+  <!-- Déclaration des variables CSS et mise en page principale -->
+  <style>
+    :root {
+      --cyan: #00cfe8;
+      --white: #fff;
+      --red: #ef4444;
+      --blue-btn: #3b82f6;
+      --green: #10b981;
+      --grey: #ccc;
+    }
+
+    /* Réinitialisation et base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Fond général et texte */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--cyan);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Barre de navigation (sticky) */
+    header {
+      width: 100%;
+      background-color: #6f2dbd;
+      padding: 12px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* Logo dans l'en-tête */
+    .logo-header img {
+      height: 60px;
+    }
+
+    /* Liens de navigation à droite */
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #ffffff33;
+    }
+
+    /* Conteneur principal du profil */
+    .container {
+      max-width: 900px;
+      padding: 80px 30px 60px;
+      text-align: center;
+      position: relative;
+      margin-top: 100px;
+    }
+
+    /* Photo de profil */
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+      border: 6px solid white;
+      object-fit: cover;
+      background-color: white;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      margin: 60px auto 30px;
+      display: block;
+    }
+
+    /* Nom de l'utilisateur */
+    h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+      margin-top: 10px;
+    }
+
+    /* Informations supplémentaires (email, statut...) */
+    .info {
+      margin-top: 20px;
+    }
+
+    .info p {
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    /* Boutons d'action du profil */
+    .buttons {
+      margin-top: 35px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .btn {
+      background-color: var(--blue-btn);
+      color: white;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+      background-color: #2563eb;
+    }
+
+    /* Bouton de suppression du compte */
+    .delete-account {
+      margin-top: 40px;
+      padding: 10px 20px;
+      background-color: transparent;
+      border: 2px solid var(--red);
+      color: var(--red);
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .delete-account:hover {
+      background-color: #ffe5e5;
+      color: #991b1b;
+    }
+
+    /* Switch d'anonymat (bloc + label + curseur) */
+    .toggle-form {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .switch-label {
+      font-weight: bold;
+      font-size: 16px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .label-state {
+      font-weight: bold;
+      color: gold;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      margin-left: 10px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--grey);
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--green);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- En-tête du site avec navigation -->
+  <header>
+    <div class="logo-header">
+      <img src="{{ url_for('static', filename='images/affiche.svg') }}" alt="Logo UHealthForum" />
+    </div>
+    <div class="nav-links">
+      <a href="{{ url_for('dashboard') }}">Accueil</a>
+      <a href="{{ url_for('publications') }}">Publications</a>
+      <a href="{{ url_for('livres') }}">Livres</a>
+      <a href="{{ url_for('mes_rendez_vous') }}">Mes rendez-vous</a>
+      <a href="{{ url_for('logout') }}">Déconnexion</a>
+    </div>
+  </header>
+
+  <!-- Contenu principal du profil -->
+  <div class="container">
+    <!-- Affichage de la photo de profil -->
+    <img src="{{ url_for('static', filename=(user['photo_de_profil'] if user and user['photo_de_profil'] else 'images/user-icon.png')) }}" class="profile-pic" alt="Photo de profil">
+
+    <!-- Nom complet -->
+    <h2>{{ user['prenom'] }} {{ user['nom'] }}</h2>
+
+    <!-- Informations personnelles -->
+    <div class="info">
+      <p>📧 {{ user.email }}</p>
+      <p>📍 {{ user.lieu_de_residence }}</p>
+      <p>📌 Statut : {{ statut.statut_etudiant or 'Non précisé' }}</p>
+    </div>
+
+    <!-- Boutons de navigation du profil -->
+    <div class="buttons">
+      <a href="{{ url_for('publications_utilisateur') }}" class="btn">Mes publications</a>
+      <a href="{{ url_for('modifier_photo') }}" class="btn">Modifier photo</a>
+      <a href="{{ url_for('demander_code_reset') }}" class="btn">Modifier mot de passe</a>
+      <a href="{{ url_for('modifier_statut') }}" class="btn">Modifier statut</a>
+      <a href="{{ url_for('modifier_email') }}" class="btn">Modifier courriel</a>
+      <a href="{{ url_for('modifier_lieu') }}" class="btn">Modifier lieu</a>
+    </div>
+
+    <!-- Commutateur d'anonymat (public/anonyme) -->
+    <div class="toggle-form">
+      <label class="switch-label">
+        Mode affichage : <span class="label-state" id="labelEtat">{{ 'Anonyme' if user.anonyme else 'Public' }}</span>
+        <div class="switch">
+          <input type="checkbox" id="toggleAnonyme" {% if user.anonyme %}checked{% endif %}>
+          <span class="slider"></span>
+        </div>
+      </label>
+    </div>
+
+    <!-- Formulaire de suppression de compte -->
+    <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirmDelete()">
+      <button class="delete-account">Supprimer mon compte</button>
+    </form>
+  </div>
+
+  <!-- Script JS pour changer le statut d'anonymat dynamiquement -->
+  <script>
+    const toggle = document.getElementById("toggleAnonyme");
+    const label = document.getElementById("labelEtat");
+
+    toggle.addEventListener("change", function () {
+      const isChecked = this.checked;
+      const formData = new URLSearchParams();
+      formData.append("anonyme", isChecked ? "1" : "0");
+
+      fetch("{{ url_for('changer_anonymat') }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData.toString()
+      }).then(() => {
+        label.textContent = isChecked ? "Anonyme" : "Public";
+      });
+    });
+  </script>
+
+</body>
+</html>

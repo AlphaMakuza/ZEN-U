@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!-- Document HTML5 -->
+<html lang="fr">
+<head>
+    <!-- Encodage des caractères -->
+    <meta charset="UTF-8">
+    <title>Mes rendez-vous</title>
+
+    <!-- Feuille de style principale -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_homogene.css') }}">
+</head>
+<body>
+
+<!-- Inclusion de l’en-tête (navigation principale) -->
+{% include 'header.html' %}
+
+<!-- Contenu principal de la page -->
+<div class="container">
+    <h1 class="page-title">📅 Mes rendez-vous à venir</h1>
+
+    <!-- Si des rendez-vous existent -->
+    {% if rendez_vous %}
+    <div class="table-container">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Étudiant</th>
+                    <th>Raison</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Boucle sur chaque rendez-vous -->
+                {% for rdv in rendez_vous %}
+                <tr>
+                    <td>{{ rdv.date }}</td>
+                    <td>{{ rdv.heure_debut }}</td>
+                    <td>{{ rdv.heure_fin }}</td>
+                    <td>{{ rdv.prenom }} {{ rdv.nom }}</td>
+                    <td>{{ rdv.raison or "Non précisée" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sinon : message d'absence de rendez-vous -->
+    {% else %}
+        <p class="no-data">Vous n'avez aucun rendez-vous à venir.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -10,7 +10,7 @@ This project was developed with 4 classmates as part of a university course and 
 ## Demo
 Here’s a short video showing how the application works, including posting, commenting, reactions, and moderation:
 
-👉 https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE
+https://www.youtube.com/watch?v=_MLxOdztJqU&t=140s
 
 ---
 

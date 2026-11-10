@@ -1,4 +1,4 @@
-# USafe Forum
+# ZEN U forum
 
 ZEN-U is a web forum built for students to discuss mental health topics in a structured and respectful way.  
 The goal was to allow both anonymous and non-anonymous participation while maintaining moderation and safety.
